@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Car - {{ car.brand }} {{ car.model }}</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/manager_dashboard.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1><i class='bx bxs-edit'></i> Edit Car Details</h1>
+        <div class="navbar-links">
+            <a href="{{ url_for('manager_dashboard') }}"><i class='bx bxs-left-arrow-alt'></i> Back to Dashboard</a>
+            <a href="{{ url_for('manager_logout') }}"><i class='bx bxs-log-out'></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="add-car-section" style="max-width: 800px; margin: 0 auto;">
+            <h2 class="section-title"><i class='bx bxs-car'></i> Edit {{ car.brand }} {{ car.model }}</h2>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">{{ messages[0] }}</div>
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="input-box">
+                        <input name="brand" type="text" placeholder="Brand" value="{{ car.brand }}" required>
+                    </div>
+                    <div class="input-box">
+                        <input name="model" type="text" placeholder="Model" value="{{ car.model }}" required>
+                    </div>
+                    <div class="input-box">
+                        <input name="seats" type="number" min="2" max="12" placeholder="Seats" value="{{ car.seats }}" required>
+                    </div>
+                    <div class="input-box">
+                        <input name="rent" type="number" min="1" placeholder="Rent per Day (₹)" value="{{ car.rent }}" required>
+                    </div>
+                    <div class="input-box">
+                        <input name="mileage" type="number" step="0.1" min="1" placeholder="Mileage (km/l)" value="{{ car.mileage }}" required>
+                    </div>
+                    <div class="input-box">
+                        <input name="fuel_type" type="text" placeholder="Fuel Type" value="{{ car.fuel_type }}" required>
+                    </div>
+                    <div class="input-box">
+                        <input name="transmission" type="text" placeholder="Transmission" value="{{ car.transmission }}" required>
+                    </div>
+                    <div class="input-box">
+                        <input name="image" type="file" accept="image/*">
+                    </div>
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <label style="color: #fff; display: flex; align-items: center; gap: 10px; font-size: 16px;">
+                        <input type="checkbox" name="available" {% if car.available %}checked{% endif %} style="width: 20px; height: 20px; accent-color: #4ade80;">
+                        Car is available for rent
+                    </label>
+                </div>
+
+                {% if car.image %}
+                <div style="margin: 20px 0; text-align: center;">
+                    <p style="color: #fff; margin-bottom: 10px;">Current Image:</p>
+                    <img src="{{ url_for('uploaded_file', filename=car.image) }}" alt="{{ car.brand }} {{ car.model }}" style="max-width: 300px; border-radius: 15px;">
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn-add">
+                    <i class='bx bxs-save'></i> Update Car Details
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

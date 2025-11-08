@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Cars - Car Rental</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_home.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1><i class='bx bxs-car'></i> Car Rental System</h1>
+        <div class="navbar-links">
+            <span>Welcome, {{ user.name }}</span>
+            <a href="{{ url_for('user_dashboard') }}"><i class='bx bxs-user'></i> My Bookings</a>
+            <a href="{{ url_for('user_logout') }}"><i class='bx bxs-log-out'></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <h2 class="search-title">Search for Cars</h2>
+        <form method="GET" action="{{ url_for('user_home') }}">
+            <div class="search-filters">
+                <div class="filter-group">
+                    <label>Manufacturer</label>
+                    <select name="brand">
+                        <option value="">All</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="Maruti Suzuki">Maruti Suzuki</option>
+                        <option value="Tata">Tata</option>
+                        <option value="Mahindra">Mahindra</option>
+                        <option value="Kia">Kia</option>
+                        <option value="Ford">Ford</option>
+                        <option value="BMW">BMW</option>
+                        <option value="Mercedes-Benz">Mercedes-Benz</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Seats</label>
+                    <select name="seats">
+                        <option value="">All</option>
+                        <option value="5">5 Seats</option>
+                        <option value="7">7 Seats</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Fuel Type</label>
+                    <select name="fuel_type">
+                        <option value="">All</option>
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Max Rent (₹/day)</label>
+                    <input type="number" name="max_rent" placeholder="Any" min="0">
+                </div>
+                <button type="submit" class="search-btn"><i class='bx bx-search'></i> Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="cars-grid">
+        {% if cars %}
+            {% for car in cars %}
+            <div class="car-card">
+                {% if car.image %}
+                    <img src="{{ url_for('uploaded_file', filename=car.image) }}" alt="{{ car.brand }} {{ car.model }}" class="car-image" onerror="this.src='https://via.placeholder.com/300x200?text={{ car.brand }}+{{ car.model }}'">
+                {% else %}
+                    <img src="https://via.placeholder.com/300x200?text={{ car.brand }}+{{ car.model }}" alt="Car" class="car-image">
+                {% endif %}
+                <div class="car-name">{{ car.brand }} {{ car.model }}</div>
+                <div class="car-subtitle">{{ car.transmission if car.transmission else 'Manual/Automatic' }}</div>
+                <div class="car-details">
+                    <i class='bx bxs-group'></i> {{ car.seats }} Seats<br>
+                    <i class='bx bxs-gas-pump'></i> {{ car.mileage }} kmpl<br>
+                    <i class='bx bxs-droplet'></i> {{ car.fuel_type if car.fuel_type else 'Petrol' }}
+                </div>
+                <div class="car-price">
+                    <div class="price-label">Daily Price</div>
+                    <div class="price-value">₹{{ car.rent }}</div>
+                </div>
+                {% if car.available %}
+                    <a href="{{ url_for('book_car', car_id=car._id) }}" style="text-decoration:none;">
+                        <button class="order-btn">Book Now</button>
+                    </a>
+                {% else %}
+                    <button class="order-btn" disabled>Not Available</button>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-cars">
+                <i class='bx bxs-car' style="font-size:60px; margin-bottom:20px;"></i>
+                <p>No cars available matching your criteria.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

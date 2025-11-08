@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Car Rental</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_dashboard.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1><i class='bx bxs-user'></i> My Bookings</h1>
+        <div class="navbar-links">
+            <span>Welcome, {{ session.user.name }}</span>
+            <a href="{{ url_for('user_home') }}"><i class='bx bxs-car'></i> Browse Cars</a>
+            <a href="{{ url_for('user_logout') }}"><i class='bx bxs-log-out'></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2><i class='bx bxs-history'></i> Booking History</h2>
+            
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">{{ messages[0] }}</div>
+                {% endif %}
+            {% endwith %}
+
+            {% if bookings %}
+                <div class="booking-grid">
+                    {% for booking in bookings %}
+                    <div class="booking-card" {% if booking.status == "cancelled" %}style="opacity:0.5;"{% endif %}>
+                        <div class="booking-header">
+                            <div>
+                                <div class="booking-title">{{ booking.car.brand }} {{ booking.car.model }}</div>
+                                <div class="booking-id">Booking ID: #{{ booking._id|string|truncate(8, True, '') }}</div>
+                            </div>
+                            <div class="booking-status">
+                                {% if booking.status == 'active' %}
+                                    Confirmed
+                                {% elif booking.status == 'cancelled' %}
+                                    <span style="color:#ff6b6b;">Cancelled</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="booking-details">
+                            <p><i class='bx bxs-calendar'></i> <b>Start:</b> {{ booking.start }}</p>
+                            <p><i class='bx bxs-calendar-check'></i> <b>End:</b> {{ booking.end }}</p>
+                            <p><i class='bx bxs-time'></i> <b>Duration:</b> {{ booking.days }} day(s)</p>
+                            <p><i class='bx bxs-group'></i> <b>Seats:</b> {{ booking.car.seats }}</p>
+                            <p><i class='bx bxs-user-circle'></i> <b>Driver:</b> {{ 'Yes (₹500/day)' if booking.need_driver else 'No' }}</p>
+                            <p><i class='bx bxs-calendar-event'></i> <b>Booked on:</b> {{ booking.booking_date }}</p>
+                        </div>
+
+                        <div class="booking-cost">
+                            <div class="cost-row">
+                                <span>Car Rent ({{ booking.days }} days × ₹{{ booking.car.rent }})</span>
+                                <span>₹{{ booking.car_cost }}</span>
+                            </div>
+                            {% if booking.need_driver %}
+                            <div class="cost-row">
+                                <span>Driver Cost ({{ booking.days }} days × ₹500)</span>
+                                <span>₹{{ booking.driver_cost }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="cost-row cost-total">
+                                <span>Total Amount</span>
+                                <span>₹{{ booking.total }}</span>
+                            </div>
+                        </div>
+
+                    <div class="booking-actions">
+    <a href="{{ url_for('booking_receipt', booking_id=booking._id) }}" class="btn-receipt">
+        <i class='bx bxs-download'></i> View Receipt
+    </a>
+    {% if booking.can_cancel %}
+        <form method="POST" action="{{ url_for('cancel_booking', booking_id=booking._id) }}" style="display:inline;">
+            <button type="submit" onclick="return confirm('Are you sure you want to cancel this booking?')" class="btn-cancel" style="background:#ff6b6b; color:#fff;">
+                <i class='bx bxs-x-circle'></i> Cancel
+            </button>
+        </form>
+    {% elif booking.status == 'cancelled' %}
+        <span style="color:#ff6b6b; font-weight:600;">Cancelled</span>
+    {% endif %}
+</div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-bookings">
+                    <i class='bx bxs-car'></i>
+                    <h3>No Bookings Yet</h3>
+                    <p>You haven't made any bookings. Start exploring our amazing fleet!</p>
+                    <a href="{{ url_for('user_home') }}" class="btn-browse">
+                        <i class='bx bxs-search'></i> Browse Cars
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

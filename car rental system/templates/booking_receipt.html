@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Receipt</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/receipt.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1><i class='bx bxs-receipt'></i> Booking Receipt</h1>
+        <div class="navbar-links">
+            <a href="{{ url_for('user_dashboard') }}"><i class='bx bxs-user'></i> My Bookings</a>
+            <a href="{{ url_for('user_home') }}"><i class='bx bxs-car'></i> Browse Cars</a>
+        </div>
+    </div>
+
+    <div class="receipt-container">
+        <div class="receipt-header">
+            <h1><i class='bx bxs-check-circle'></i> Booking Confirmed!</h1>
+            <p>Your car rental has been successfully booked</p>
+        </div>
+
+        <div class="receipt-body">
+            <div class="receipt-section">
+                <h3>Booking Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Booking ID</span>
+                        <span class="info-value">#{{ booking._id|string|truncate(12, True, '') }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Booking Date</span>
+                        <span class="info-value">{{ booking.booking_date }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Customer Name</span>
+                        <span class="info-value">{{ booking.user_name }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email</span>
+                        <span class="info-value">{{ booking.user_email }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="receipt-section">
+                <h3>Vehicle Details</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Vehicle</span>
+                        <span class="info-value">{{ booking.car.brand }} {{ booking.car.model }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Seats</span>
+                        <span class="info-value">{{ booking.car.seats }} Seater</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Fuel Type</span>
+                        <span class="info-value">{{ booking.car.fuel_type }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Mileage</span>
+                        <span class="info-value">{{ booking.car.mileage }} km/l</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="receipt-section">
+                <h3>Rental Period</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Start Date</span>
+                        <span class="info-value">{{ booking.start }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">End Date</span>
+                        <span class="info-value">{{ booking.end }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value">{{ booking.days }} day(s)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Driver</span>
+                        <span class="info-value">{{ 'Included' if booking.need_driver else 'Not Required' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="receipt-section">
+                <h3>Payment Summary</h3>
+                <div class="cost-breakdown">
+                    <div class="cost-row">
+                        <span>Car Rent ({{ booking.days }} days × ₹{{ booking.car.rent }})</span>
+                        <span>₹{{ booking.car_cost }}</span>
+                    </div>
+                    {% if booking.need_driver %}
+                    <div class="cost-row">
+                        <span>Driver Cost ({{ booking.days }} days × ₹500)</span>
+                        <span>₹{{ booking.driver_cost }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="cost-row cost-total">
+                        <span>Total Amount</span>
+                        <span>₹{{ booking.total }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="receipt-footer">
+            <div class="receipt-actions">
+                <button class="btn-print" onclick="window.print()">
+                    <i class='bx bxs-printer'></i> Print Receipt
+                </button>
+                <button class="btn-download" onclick="window.print()">
+                    <i class='bx bxs-download'></i> Download PDF
+                </button>
+            </div>
+            <p class="receipt-note">
+                Thank you for choosing our car rental service. Please arrive 15 minutes before your booking time.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book {{ car.brand }} {{ car.model }}</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/booking.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1><i class='bx bxs-car'></i> Book Your Car</h1>
+        <div class="navbar-links">
+            <a href="{{ url_for('user_home') }}"><i class='bx bxs-left-arrow-alt'></i> Back to Cars</a>
+            <a href="{{ url_for('user_logout') }}"><i class='bx bxs-log-out'></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="booking-container">
+        <div class="car-preview">
+            {% if car.image %}
+                <img src="{{ url_for('uploaded_file', filename=car.image) }}" alt="{{ car.brand }} {{ car.model }}" class="car-preview-image">
+            {% else %}
+                <img src="https://via.placeholder.com/250x180?text={{ car.brand }}+{{ car.model }}" alt="Car" class="car-preview-image">
+            {% endif %}
+            <div class="car-preview-details">
+                <h2>{{ car.brand }} {{ car.model }}</h2>
+                <p><i class='bx bxs-group'></i> {{ car.seats }} Seats</p>
+                <p><i class='bx bxs-gas-pump'></i> {{ car.mileage }} km/l</p>
+                <p><i class='bx bxs-droplet'></i> {{ car.fuel_type }}</p>
+                <p><i class='bx bxs-dollar-circle'></i> ₹{{ car.rent }} per day</p>
+            </div>
+        </div>
+
+        <form method="POST" class="booking-form">
+            <h3>Booking Details</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" name="start" required min="{{ today }}">
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input type="date" name="end" required min="{{ today }}">
+                </div>
+            </div>
+
+            <div class="driver-option">
+                <label>
+                    <input type="checkbox" name="driver" value="yes">
+                    Need a driver? (+₹500 per day)
+                </label>
+            </div>
+
+            <div class="cost-summary">
+                <h4>Cost Summary</h4>
+                <div class="summary-row">
+                    <span>Car Rent (per day)</span>
+                    <span>₹{{ car.rent }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Driver (optional, per day)</span>
+                    <span>₹500</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span id="totalCost">₹{{ car.rent }}</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class='bx bxs-check-circle'></i> Confirm Booking
+            </button>
+        </form>
+    </div>
+
+    <script>
+    const startInput = document.querySelector('input[name="start"]');
+    const endInput = document.querySelector('input[name="end"]');
+
+    function validateDates() {
+       if (startInput.value && endInput.value) {
+            if (endInput.value < startInput.value) {
+                endInput.setCustomValidity('End Date must be after or equal to Start Date.');
+        } else {
+            endInput.setCustomValidity('');
+            }
+    }
+}   
+
+startInput.addEventListener('change', () => {
+    endInput.min = startInput.value;
+    validateDates();
+});
+endInput.addEventListener('change', validateDates);
+
+window.onload = function() {
+    const today = new Date().toISOString().split('T')[0];
+    startInput.min = today;
+    endInput.min = today;
+};
+</script>
+
+</body>
+</html>

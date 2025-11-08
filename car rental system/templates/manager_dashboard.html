@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/manager_dashboard.css') }}">
+    <style>
+    .details-modal {
+        display: none;
+        position: fixed;
+        left:0; top:0; right:0; bottom:0;
+        background: rgba(0,0,0,0.66);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    }
+    .details-modal.active { display: flex; }
+    .details-modal-content {
+        background: #fff;
+        border-radius: 15px;
+        padding: 30px;
+        min-width: 320px;
+        max-width: 90vw;
+        min-height: 140px;
+        max-height: 95vh;
+        box-shadow: 0 16px 45px #2223;
+        position: relative;
+        overflow: auto;
+        color: #222;
+    }
+    .details-modal-close {
+        position: absolute;
+        right: 18px;
+        top: 10px;
+        font-size: 22px;
+        color: #667eea;
+        cursor: pointer;
+        font-weight: bold;
+        z-index: 1;
+    }
+    .details-modal-content h3 { margin-top: 0; color: #667eea; }
+    .details-modal-content table { border-collapse: collapse; width: 100%; background: #fff; margin: 10px 0;}
+    .details-modal-content th, .details-modal-content td {
+        border: 1px solid #e5e5e5;
+        padding: 8px 10px;
+        text-align: left;
+        font-size: 15px;
+    }
+    .details-modal-content th {
+        background: #667eea;
+        color: #fff;
+    }
+    .details-modal-content tbody tr:nth-child(even) {
+        background: #f6f8fa;
+    }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1><i class='bx bxs-car-mechanic'></i> Manager Dashboard</h1>
+        <div class="navbar-links">
+            <span>Manager Panel</span>
+            <a href="{{ url_for('index') }}"><i class='bx bxs-home'></i> Home</a>
+            <a href="{{ url_for('manager_logout') }}"><i class='bx bxs-log-out'></i> Logout</a>
+        </div>
+    </div>
+
+    <!-- Statistics with clickable cards -->
+    <div class="stats-container">
+        <div class="stat-card" onclick="showModal('modal-allcars')">
+            <h3>{{ cars|length }}</h3>
+            <p><i class='bx bxs-car'></i> Total Cars</p>
+        </div>
+        <div class="stat-card" onclick="showModal('modal-available')">
+            <h3>{{ cars|selectattr('available', 'equalto', true)|list|length }}</h3>
+            <p><i class='bx bxs-check-circle'></i> Available</p>
+        </div>
+        <div class="stat-card" onclick="showModal('modal-rented')">
+            <h3>{{ cars|selectattr('available', 'equalto', false)|list|length }}</h3>
+            <p><i class='bx bxs-x-circle'></i> Rented</p>
+        </div>
+        <div class="stat-card" onclick="showModal('modal-bookings')">
+            <h3>{{ bookings|length }}</h3>
+            <p><i class='bx bxs-book-content'></i> Bookings</p>
+        </div>
+    </div>
+
+    <!-- Hidden Modals for Stat Details -->
+    <div id="modal-allcars" class="details-modal">
+        <div class="details-modal-content">
+            <span class="details-modal-close" onclick="hideAllModals()">&times;</span>
+            <h3>All Cars In Fleet</h3>
+            <ul>
+              {% for c in cars %}
+              <li>{{ c.brand }} {{ c.model }} - {% if c.available %}Available{% else %}Rented{% endif %}</li>
+              {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div id="modal-available" class="details-modal">
+        <div class="details-modal-content">
+            <span class="details-modal-close" onclick="hideAllModals()">&times;</span>
+            <h3>Available Cars</h3>
+            <ul>
+              {% for c in cars %}
+              {% if c.available %}
+              <li>{{ c.brand }} {{ c.model }}</li>
+              {% endif %}
+              {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div id="modal-rented" class="details-modal">
+        <div class="details-modal-content">
+            <span class="details-modal-close" onclick="hideAllModals()">&times;</span>
+            <h3>Rented Cars</h3>
+            <table>
+              <tr><th>Car</th><th>Rented By</th><th>Start</th><th>End</th></tr>
+              {% for item in current_rentals %}
+                <tr>
+                  <td>{{ item.booking.car.brand }} {{ item.booking.car.model }}</td>
+                  <td>{{ item.booking.user_name }}</td>
+                  <td>{{ item.booking.start }}</td>
+                  <td>{{ item.booking.end }}</td>
+                </tr>
+              {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div id="modal-bookings" class="details-modal">
+        <div class="details-modal-content">
+            <span class="details-modal-close" onclick="hideAllModals()">&times;</span>
+            <h3>All Bookings</h3>
+            <table>
+              <tr>
+                <th>ID</th><th>Car</th><th>User</th><th>Start</th><th>End</th><th>Days</th><th>Total</th>
+              </tr>
+              {% for b in bookings %}
+              <tr>
+                <td>{{ b._id|string|truncate(8, True, '') }}</td>
+                <td>{{ b.car.brand }} {{ b.car.model }}</td>
+                <td>{{ b.user_name }}</td>
+                <td>{{ b.start }}</td>
+                <td>{{ b.end }}</td>
+                <td>{{ b.days }}</td>
+                <td>₹{{ b.total }}</td>
+              </tr>
+              {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Car Section -->
+    <div class="add-car-section">
+        <h2 class="section-title"><i class='bx bxs-plus-circle'></i> Add New Car</h2>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+        <form method="POST" action="{{ url_for('manager_add_car') }}" enctype="multipart/form-data">
+            <div class="form-grid">
+                <div class="input-box">
+                    <input name="brand" type="text" placeholder="Brand (e.g., Toyota)" required>
+                </div>
+                <div class="input-box">
+                    <input name="model" type="text" placeholder="Model (e.g., Camry)" required>
+                </div>
+                <div class="input-box">
+                    <input name="seats" type="number" min="2" max="12" placeholder="Seats" required>
+                </div>
+                <div class="input-box">
+                    <input name="rent" type="number" min="1" placeholder="Rent per Day (₹)" required>
+                </div>
+                <div class="input-box">
+                    <input name="mileage" type="number" step="0.1" min="1" placeholder="Mileage (km/l)" required>
+                </div>
+                <div class="input-box">
+                    <input name="fuel_type" type="text" placeholder="Fuel Type (Petrol/Diesel)" required>
+                </div>
+                <div class="input-box">
+                    <input name="transmission" type="text" placeholder="Transmission (Manual/Automatic)" required>
+                </div>
+                <div class="input-box">
+                    <input name="image" type="file" accept="image/*">
+                </div>
+            </div>
+            <button type="submit" class="btn-add"><i class='bx bxs-save'></i> Add Car to Fleet</button>
+        </form>
+    </div>
+    <!-- Car Fleet -->
+    <div class="add-car-section">
+        <h2 class="section-title"><i class='bx bxs-car'></i> Car Fleet Management ({{ cars|length }} Cars)</h2>
+        <div class="cars-grid">
+            {% if cars %}
+                {% for car in cars %}
+                <div class="car-card">
+                    {% if car.image %}
+                        <img src="{{ url_for('uploaded_file', filename=car.image) }}" alt="{{ car.brand }} {{ car.model }}" class="car-image" onerror="this.src='https://via.placeholder.com/300x200?text={{ car.brand }}+{{ car.model }}'">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300x200?text={{ car.brand }}+{{ car.model }}" alt="Car" class="car-image">
+                    {% endif %}
+                    <div class="car-name">{{ car.brand }} {{ car.model }}</div>
+                    <div class="car-subtitle">{{ car.transmission if car.transmission else 'Manual/Automatic' }}</div>
+                    <div class="car-details">
+                        <i class='bx bxs-group'></i> {{ car.seats }} Seats<br>
+                        <i class='bx bxs-gas-pump'></i> {{ car.mileage }} kmpl<br>
+                        <i class='bx bxs-droplet'></i> {{ car.fuel_type if car.fuel_type else 'Petrol' }}
+                    </div>
+                    <div class="car-price">
+                        <div class="price-label">Daily Price</div>
+                        <div class="price-value">₹{{ car.rent }}</div>
+                    </div>
+                    {% if car.available %}
+                        <span class="status-badge status-available"><i class='bx bxs-check-circle'></i> Available</span>
+                    {% else %}
+                        <span class="status-badge status-rented"><i class='bx bxs-x-circle'></i> Rented Out</span>
+                    {% endif %}
+                    <div class="car-actions">
+                        <a href="{{ url_for('manager_edit_car', car_id=car._id) }}" style="flex:1; text-decoration:none;">
+                            <button class="btn-edit"><i class='bx bxs-edit'></i> Edit</button>
+                        </a>
+                        <button class="btn-delete" onclick="if(confirm('Delete {{ car.brand }} {{ car.model }}?')) window.location.href='{{ url_for('manager_delete_car', car_id=car._id) }}'">
+                            <i class='bx bxs-trash'></i> Delete
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-cars">
+                    <i class='bx bxs-car' style="font-size:60px; margin-bottom:20px;"></i>
+                    <p>No cars in fleet. Add your first car above!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+    function hideAllModals() {
+        document.querySelectorAll('.details-modal').forEach(m => m.classList.remove('active'));
+    }
+    function showModal(modalid) {
+        hideAllModals();
+        document.getElementById(modalid).classList.add('active');
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+.booking-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.car-preview {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.car-preview-image {
+    width: 250px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.car-preview-details {
+    flex: 1;
+    color: #fff;
+}
+
+.car-preview-details h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.car-preview-details p {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+}
+
+.car-preview-details i {
+    color: #4ade80;
+    font-size: 20px;
+}
+
+.booking-form {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.booking-form h3 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.driver-option {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.driver-option label {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.driver-option input {
+    accent-color: #4ade80;
+    width: 20px;
+    height: 20px;
+}
+
+.cost-summary {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.cost-summary h4 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.summary-total {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4ade80;
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: #4ade80;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background: #22c55e;
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    .car-preview {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .car-preview-image {
+        width: 100%;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}

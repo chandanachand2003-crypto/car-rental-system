@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental System</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="landing-container">
+        <i class='bx bxs-car icon'></i>
+        <h1>Car Rental System</h1>
+        <p class="subtitle">Rent your dream car with ease. Professional service, competitive prices.</p>
+        
+        <div class="btn-group">
+            <a href="{{ url_for('user_login') }}" class="btn btn-primary">
+                <i class='bx bxs-user'></i> User Login
+            </a>
+            <a href="{{ url_for('user_register') }}" class="btn btn-secondary">
+                <i class='bx bxs-user-plus'></i> Register Now
+            </a>
+        </div>
+        
+        <div class="divider">OR</div>
+        
+        <a href="{{ url_for('manager_login') }}" class="btn btn-secondary">
+            <i class='bx bxs-shield'></i> Manager Login
+        </a>
+    </div>
+</body>
+</html>

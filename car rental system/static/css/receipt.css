@@ -1,0 +1,175 @@
+.receipt-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.receipt-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+}
+
+.receipt-header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.receipt-header p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.receipt-body {
+    padding: 40px;
+}
+
+.receipt-section {
+    margin-bottom: 30px;
+}
+
+.receipt-section h3 {
+    color: #667eea;
+    font-size: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.info-label {
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.info-value {
+    font-size: 16px;
+    color: #1f2937;
+    font-weight: 500;
+}
+
+.cost-breakdown {
+    background: #f9fafb;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.cost-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.cost-total {
+    font-size: 24px;
+    font-weight: 700;
+    color: #667eea;
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 2px solid #e5e7eb;
+}
+
+.receipt-footer {
+    background: #f9fafb;
+    padding: 30px 40px;
+    text-align: center;
+    border-top: 1px solid #e5e7eb;
+}
+
+.receipt-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.btn-print,
+.btn-download {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-print {
+    background: #667eea;
+    color: #fff;
+}
+
+.btn-print:hover {
+    background: #5568d3;
+}
+
+.btn-download {
+    background: #4ade80;
+    color: #fff;
+}
+
+.btn-download:hover {
+    background: #22c55e;
+}
+
+.receipt-note {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 15px;
+}
+
+@media print {
+    body {
+        background: #fff;
+        padding: 0;
+    }
+    
+    .navbar,
+    .receipt-actions {
+        display: none;
+    }
+    
+    .receipt-container {
+        box-shadow: none;
+        margin: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .receipt-actions {
+        flex-direction: column;
+    }
+    
+    .btn-print,
+    .btn-download {
+        width: 100%;
+        justify-content: center;
+    }
+}

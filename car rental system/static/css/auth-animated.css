@@ -1,0 +1,449 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Animated Background */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.animated-bg span {
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    animation: animate 25s linear infinite;
+    bottom: -150px;
+}
+
+.animated-bg span:nth-child(1) {
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s;
+}
+
+.animated-bg span:nth-child(2) {
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 2s;
+    animation-duration: 12s;
+}
+
+.animated-bg span:nth-child(3) {
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 4s;
+}
+
+.animated-bg span:nth-child(4) {
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+    animation-duration: 18s;
+}
+
+.animated-bg span:nth-child(5) {
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 0s;
+}
+
+.animated-bg span:nth-child(6) {
+    left: 75%;
+    width: 110px;
+    height: 110px;
+    animation-delay: 3s;
+}
+
+.animated-bg span:nth-child(7) {
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 7s;
+}
+
+.animated-bg span:nth-child(8) {
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    animation-delay: 15s;
+    animation-duration: 45s;
+}
+
+.animated-bg span:nth-child(9) {
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    animation-delay: 2s;
+    animation-duration: 35s;
+}
+
+.animated-bg span:nth-child(10) {
+    left: 85%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 0s;
+    animation-duration: 11s;
+}
+
+@keyframes animate {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+    100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+    }
+}
+
+/* Auth Container */
+.auth-container {
+    position: relative;
+    width: 420px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    z-index: 1;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h2 {
+    font-size: 32px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Input Styles */
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 25px 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 40px;
+    padding: 0 45px 0 20px;
+    font-size: 16px;
+    color: #fff;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-box input:focus {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.input-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.input-box input:focus ~ i {
+    color: #4ade80;
+}
+
+/* Remember & Forgot */
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: -10px 0 15px;
+}
+
+.remember-forgot label {
+    color: #fff;
+    cursor: pointer;
+}
+
+.remember-forgot label input {
+    accent-color: #fff;
+    margin-right: 5px;
+}
+
+.remember-forgot a {
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+    color: #4ade80;
+}
+
+/* Button */
+.btn {
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #667eea;
+    transition: 0.3s;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+    background: #4ade80;
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(74, 222, 128, 0.4);
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* Register Link */
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.register-link p {
+    color: #fff;
+    margin: 10px 0;
+}
+
+.register-link p a {
+    color: #4ade80;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.register-link p a:hover {
+    text-decoration: underline;
+}
+
+/* Terms */
+.terms {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.terms input {
+    accent-color: #fff;
+    margin-right: 8px;
+}
+
+.terms label {
+    color: #fff;
+}
+
+.terms a {
+    color: #4ade80;
+    text-decoration: underline;
+}
+
+/* Alert */
+.alert {
+    background: rgba(255, 107, 107, 0.3);
+    color: #fff;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 107, 107, 0.5);
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Success Animation */
+.success-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.success-overlay.active {
+    display: flex;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.success-content {
+    text-align: center;
+    color: #fff;
+}
+
+.car-animation {
+    position: relative;
+    width: 300px;
+    height: 150px;
+    margin: 0 auto 30px;
+}
+
+.car {
+    width: 150px;
+    height: 80px;
+    position: absolute;
+    left: -200px;
+    top: 35px;
+    animation: driveCar 2s ease-in-out forwards;
+}
+
+@keyframes driveCar {
+    0% {
+        left: -200px;
+    }
+    100% {
+        left: 150%;
+    }
+}
+
+.road {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    height: 4px;
+    background: repeating-linear-gradient(
+        to right,
+        #fff 0px,
+        #fff 20px,
+        transparent 20px,
+        transparent 40px
+    );
+    animation: moveRoad 1s linear infinite;
+}
+
+@keyframes moveRoad {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 40px 0;
+    }
+}
+
+.success-message {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    animation: bounceIn 0.6s;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.success-icon {
+    font-size: 80px;
+    color: #4ade80;
+    margin-bottom: 20px;
+    animation: zoomIn 0.5s;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0) rotate(0deg);
+    }
+    to {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-container {
+        width: 90%;
+        padding: 30px 20px;
+    }
+}
